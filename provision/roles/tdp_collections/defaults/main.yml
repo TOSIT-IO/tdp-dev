@@ -1,0 +1,102 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+tdp_core_root_dir: "{{ project_dir }}/ansible_collections/tosit"
+tdp_core_install_dir: "{{ tdp_core_root_dir }}/tdp"
+
+additional_ansible_collections:
+  - name: ansible.posix
+    version: 1.5.4
+  - name: community.crypto
+    version: 2.14.0
+  - name: community.general
+    version: 7.1.0
+  - name: community.grafana
+    version: 1.5.4
+  - name: community.postgresql
+    version: 2.4.2
+
+additional_ansible_roles:
+  - name: cloudalchemy.prometheus
+    version: 4.0.0
+  - name: cloudalchemy.grafana
+    version: 0.18.0
+
+tdp_core_binaries:
+  - name: "hadoop-3.1.1-0.0.tar.gz"
+    url: "https://github.com/TOSIT-IO/hadoop/releases/download/3.1.1-0.0/hadoop-3.1.1-0.0.tar.gz"
+  - name: "hbase-2.1.10-1.0-bin.tar.gz"
+    url: "https://github.com/TOSIT-IO/hbase/releases/download/2.1.10-1.0/hbase-2.1.10-1.0-bin.tar.gz"
+  - name: "apache-hive-3.1.3-1.0-bin.tar.gz"
+    url: "https://github.com/TOSIT-IO/hive/releases/download/3.1.3-1.0/apache-hive-3.1.3-1.0-bin.tar.gz"
+  - name: "knox-1.6.1-0.0.tar.gz"
+    url: "https://github.com/TOSIT-IO/knox/releases/download/1.6.1-0.0/knox-1.6.1-0.0.tar.gz"
+  - name: "knoxshell-1.6.1-0.0.tar.gz"
+    url: "https://github.com/TOSIT-IO/knox/releases/download/1.6.1-0.0/knoxshell-1.6.1-0.0.tar.gz"
+  - name: "phoenix-hbase-2.1-5.1.3-1.0-bin.tar.gz"
+    url: "https://github.com/TOSIT-IO/phoenix/releases/download/5.1.3-1.0/phoenix-hbase-2.1-5.1.3-1.0-bin.tar.gz"
+  - name: "phoenix-queryserver-6.0.0-0.0-bin.tar.gz"
+    url: "https://github.com/TOSIT-IO/phoenix-queryserver/releases/download/6.0.0-0.0/phoenix-queryserver-6.0.0-0.0-bin.tar.gz"
+  - name: "ranger-2.0.0-1.0-admin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-admin.tar.gz"
+  - name: "ranger-2.0.0-1.0-hdfs-plugin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-hdfs-plugin.tar.gz"
+  - name: "ranger-2.0.0-1.0-hive-plugin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-hive-plugin.tar.gz"
+  - name: "ranger-2.0.0-1.0-knox-plugin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-knox-plugin.tar.gz"
+  - name: "ranger-2.0.0-1.0-yarn-plugin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-yarn-plugin.tar.gz"
+  - name: "ranger-2.0.0-1.0-hbase-plugin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-hbase-plugin.tar.gz"
+  - name: "ranger-2.0.0-1.0-usersync.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-usersync.tar.gz"
+  - name: "ranger-2.0.0-1.0-kms.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-kms.tar.gz"
+  - name: "spark-2.3.4-1.0-bin-tdp.tgz"
+    url: "https://github.com/TOSIT-IO/spark/releases/download/2.3.4-1.0/spark-2.3.4-1.0-bin-tdp.tgz"
+  - name: "spark-3.2.2-0.0-bin-tdp.tgz"
+    url: "https://github.com/TOSIT-IO/spark/releases/download/3.2.2-0.0/spark-3.2.2-0.0-bin-tdp.tgz"
+  - name: "tez-0.9.1-1.0.tar.gz"
+    url: "https://github.com/TOSIT-IO/tez/releases/download/0.9.1-1.0/tez-0.9.1-1.0.tar.gz"
+  - name: "solr-7.7.3.tgz"
+    url: "https://archive.apache.org/dist/lucene/solr/7.7.3/solr-7.7.3.tgz"
+  - name: "zookeeper-3.4.6.tar.gz"
+    url: "https://archive.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
+  - name: "apache-zookeeper-3.5.9-bin.tar.gz"
+    url: "https://archive.apache.org/dist/zookeeper/zookeeper-3.5.9/apache-zookeeper-3.5.9-bin.tar.gz"
+  - name: "hbase-spark-2.3.4-1.0.0-0.0.jar"
+    url: "https://github.com/TOSIT-IO/hbase-connectors/releases/download/2.3.4-1.0.0-0.0/hbase-spark-2.3.4-1.0.0-0.0.jar"
+  - name: "hbase-hbck2-1.1.0-0.0.jar"
+    url: "https://github.com/TOSIT-IO/hbase-operator-tools/releases/download/1.1.0-0.0/hbase-hbck2-1.1.0-0.0.jar"
+
+tdp_extras_binaries:
+  - name: "kafka_2.13-2.8.2-TDP-0.1.0-SNAPSHOT.tgz"
+    url: "https://github.com/TOSIT-IO/kafka/releases/download/2.8.2-TDP-0.1.0/kafka_2.13-2.8.2-TDP-0.1.0-SNAPSHOT.tgz"
+  - name: "ranger-2.0.0-1.0-kafka-plugin.tar.gz"
+    url: "https://github.com/TOSIT-IO/ranger/releases/download/2.0.0-1.0/ranger-2.0.0-1.0-kafka-plugin.tar.gz"
+  - name: "jupyterhub-2.3.1-TDP-0.1.0.tar.gz"
+    url: "https://github.com/TOSIT-IO/jupyterhub-pkg/releases/download/v2.3.1-TDP-0.1.0/jupyterhub-2.3.1-TDP-0.1.0.tar.gz"
+  - name: "apache-livy-0.8.0-incubating-TDP-0.1.0-SNAPSHOT-bin.zip"
+    url: "https://github.com/TOSIT-IO/incubator-livy/releases/download/v0.8.0-incubating-TDP-0.1.0/apache-livy-0.8.0-incubating-TDP-0.1.0-SNAPSHOT-bin.zip"
+  - name: "hue-release-4.10.0-TDP-0.1.0.tar.gz"
+    url: "https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.10.0-TDP-0.1.0-python36/hue-release-4.10.0-TDP-0.1.0.tar.gz"
+  - name: "hue-release-4.10.0-TDP-0.1.0-python36.tar.gz"
+    url: "https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.10.0-TDP-0.1.0-python36/hue-release-4.10.0-TDP-0.1.0-python36.tar.gz"
+
+tdp_observability_binaries:
+  - name: "node_exporter-1.3.1.linux-amd64.tar.gz"
+    url: "https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz"
+  - name: "postgres_exporter-0.12.0.linux-amd64.tar.gz"
+    url: "https://github.com/prometheus-community/postgres_exporter/releases/download/v0.12.0/postgres_exporter-0.12.0.linux-amd64.tar.gz"
+  - name: "jmx_prometheus_javaagent-0.16.1.jar"
+    url: "https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.16.1/jmx_prometheus_javaagent-0.16.1.jar"
+  - name: "prometheus-2.37.6.linux-amd64.tar.gz"
+    url: "https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz"
+  - name: "loki-2.7.2-linux-amd64.zip"
+    url: "https://github.com/grafana/loki/releases/download/v2.7.2/loki-linux-amd64.zip"
+  - name: "promtail-2.7.2-linux-amd64.zip"
+    url: "https://github.com/grafana/loki/releases/download/v2.7.2/promtail-linux-amd64.zip"
+  - name: "grafana-9.2.0.linux-amd64.tar.gz"
+    url: "https://dl.grafana.com/oss/release/grafana-9.2.0.linux-amd64.tar.gz"
+

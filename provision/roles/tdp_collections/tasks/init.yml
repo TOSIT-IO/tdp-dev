@@ -1,0 +1,26 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Download core binaries
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ project_dir }}/files/{{ item.name }}"
+  loop: "{{ tdp_core_binaries }}"
+  when: tdp_collection_core.enabled
+  environment: "{{ proxy_env }}"
+
+- name: Download extras binaries
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ project_dir }}/files/{{ item.name }}"
+  loop: "{{ tdp_extras_binaries }}"
+  when: tdp_collection_extras.enabled
+  environment: "{{ proxy_env }}"
+
+- name: Download observability binaries
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ project_dir }}/files/{{ item.name }}"
+  loop: "{{ tdp_observability_binaries }}"
+  when: tdp_collection_observability.enabled
+  environment: "{{ proxy_env }}"

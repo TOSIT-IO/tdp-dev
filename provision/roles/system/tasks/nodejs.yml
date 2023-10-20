@@ -1,0 +1,28 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Download Node.js package
+  become: true
+  get_url:
+    url: https://nodejs.org/dist/v18.18.1/node-v18.18.1-linux-x64.tar.xz
+    dest: /tmp/node-v18.18.1-linux-x64.tar.xz
+  environment: "{{ proxy_env }}"
+
+- name: Extract Node.js package
+  become: true
+  unarchive:
+    src: /tmp/node-v18.18.1-linux-x64.tar.xz
+    dest: /opt
+    remote_src: true
+
+- name: Create symlink for /usr/bin/node, /usr/bin/npm, and /usr/bin/npx
+  become: true
+  file:
+    src: "/opt/node-v18.18.1-linux-x64/bin/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+  loop:
+    - node
+    - npm
+    - npx
+

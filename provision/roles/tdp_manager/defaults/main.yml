@@ -1,0 +1,23 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+tdp_vars_overrides: tdp_vars_overrides
+
+sqlite_db_path: "{{ project_dir }}/sqlite.db"
+tdp_database_dsn: "sqlite:///{{ sqlite_db_path }}"
+
+required_python_packages:
+  - ansible-core==2.15.1
+  - jmespath==1.0.1
+  - passlib==1.7.4
+
+env_collection_path: "{{ 
+  tdp_collection_core.enabled | ternary(tdp_collections_dir + '/' + tdp_collection_core.dir, '') ~
+  tdp_collection_extras.enabled | ternary(':' + tdp_collections_dir + '/' + tdp_collection_extras.dir, '') ~
+  tdp_collection_observability.enabled | ternary(':' + tdp_collections_dir + '/' + tdp_collection_observability.dir, '')
+}}"
+
+env_cors_origins: "{{ 
+  tdp_server.enabled | ternary('\\\"http://localhost:' + tdp_server.port | string + '\\\"', '') ~
+  tdp_ui.enabled | ternary(',' + '\\\"http://localhost:' + tdp_ui.port | string + '\\\"', '')
+}}"

@@ -1,0 +1,64 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Copy vagrant inventory files
+  copy: 
+    src:  "{{ playbook_dir }}/../../.vagrant"
+    dest: "{{ project_dir }}"
+    mode: "600"
+
+- name: Template hosts.ini file
+  template:
+    src: inventory.j2
+    dest: "{{ project_dir }}/inventory/hosts.ini"
+
+- name: Check if .env file exists
+  stat:
+    path: "{{ project_dir }}/.env"
+  register: env_file_stat
+
+- name: Template the env file
+  template:
+    src: env_vars.j2
+    dest: "{{ project_dir }}/.env"
+  when: not env_file_stat.stat.exists or clean_install
+  vars:
+    tdp_collection_path: "{{ env_collection_path }}"
+    backend_cors_origins: "{{ env_cors_origins }}"
+
+- name: Copy environment file to /etc/sysconfig/tdp-server
+  become: true
+  copy:
+    src: "{{ project_dir }}/.env"
+    dest: /etc/sysconfig/tdp-server
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0644'
+  register: copy_result
+
+- name: Remove 'export ' from /etc/sysconfig/tdp-server
+  become: true
+  replace:
+    path: /etc/sysconfig/tdp-server
+    regexp: '^export '
+    replace: ''
+  when: copy_result.changed
+
+- name: Template TDP server service file
+  become: true
+  template:
+    src: tdp-server.service.j2
+    dest: /usr/lib/systemd/system/tdp-server.service
+
+- name: Template config.json file
+  become: true
+  template:
+    src: tdp-ui-config.j2
+    dest: "{{ project_dir }}/{{ tdp_ui.dir }}/config.json"
+
+- name: Template TDP UI service file
+  become: true
+  template:
+    src: tdp-ui.service.j2
+    dest: /usr/lib/systemd/system/tdp-ui.service

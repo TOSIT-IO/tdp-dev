@@ -1,0 +1,20 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Start TDP server service
+  become: true
+  systemd:
+    name: tdp-server.service
+    state: started
+    enabled: yes
+  when: tdp_server.enabled
+
+- name: Start TDP UI service
+  become: true
+  systemd:
+    name: tdp-ui.service
+    state: started
+    enabled: yes
+  when: tdp_ui.enabled
+
+

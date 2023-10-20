@@ -1,0 +1,144 @@
+---
+# TDP
+realm: REALM.TDP
+
+# If you need HTTP proxy to reach internet
+# http_proxy: "http://proxy:3128"
+# https_proxy: "{{ http_proxy }}"
+# no_proxy: ""
+
+# Override default NTP servers
+# ntp_servers: []
+
+# Kerberos
+kadmin_principal: admin/admin
+kadmin_password: admin123
+kadmind_server: "{{ groups['kdc'][0] | tosit.tdp.access_fqdn(hostvars) }}"
+kdc_server: "{{ groups['kdc'][0] | tosit.tdp.access_fqdn(hostvars) }} "
+
+ca_name: "tdp_ca"
+ca_file: "{{ certs_dir }}/tdp_ca.crt"
+
+# User management
+users:
+  - user: tdp_user
+    password: tdp_user123
+    group: tdp_user
+    uid: 1101
+    gid: 1101
+  - user: smoke_user
+    password: smoke_user123
+    group: smoke_user
+    uid: 1102
+    gid: 1102
+
+ldap_groups: "{{ users }}"
+ldap_users: "{{ users }}"
+
+hdfs_user_homes: "{{ users }}"
+
+# Ranger policy management
+ranger_policies:
+  # Hive
+  - name: tdp_user - database
+    description: tdp_user access to tdp_user database
+    service: hive-tdp
+    isAuditEnabled: true
+    isEnabled: true
+    resources:
+      column:
+        isExcludes: false
+        values: ["*"]
+      database:
+        isExcludes: false
+        values: [tdp_user*]
+      table:
+        isExcludes: false
+        values: ["*"]
+    policyItems:
+      - users: [tdp_user]
+        groups: []
+        delegateAdmin: true
+        accesses:
+          - { isAllowed: true, type: select }
+          - { isAllowed: true, type: update }
+          - { isAllowed: true, type: create }
+          - { isAllowed: true, type: drop }
+          - { isAllowed: true, type: alter }
+          - { isAllowed: true, type: index }
+          - { isAllowed: true, type: lock }
+          - { isAllowed: true, type: all }
+          - { isAllowed: true, type: read }
+          - { isAllowed: true, type: write }
+          - { isAllowed: true, type: refresh }
+        conditions: []
+
+  # HBase
+  - name: tdp_user - table
+    description: tdp_user access to tdp_user_* tables
+    service: hbase-tdp
+    isAuditEnabled: true
+    isEnabled: true
+    resources:
+      column:
+        isExcludes: false
+        values: ["*"]
+      column-family:
+        isExcludes: false
+        values: ["*"]
+      table:
+        isExcludes: false
+        values: ["default:tdp_user_*"]
+    policyItems:
+      - users: [tdp_user]
+        groups: []
+        delegateAdmin: true
+        accesses:
+          - { isAllowed: true, type: read }
+          - { isAllowed: true, type: write }
+          - { isAllowed: true, type: create }
+        conditions: []
+
+  # Kafka
+  - name: tdp_user - topic
+    description: test_user access to tdp-user-* topics
+    service: kafka-tdp
+    isAuditEnabled: true
+    isEnabled: true
+    resources:
+      topic:
+        isExcludes: false
+        values: ["tdp-user-*"]
+    policyItems:
+      - users: [tdp_user]
+        groups: []
+        delegateAdmin: true
+        accesses:
+          - { isAllowed: true, type: create }
+          - { isAllowed: true, type: publish }
+          - { isAllowed: true, type: consume }
+          - { isAllowed: true, type: configure }
+          - { isAllowed: true, type: describe }
+          - { isAllowed: true, type: delete }
+          - { isAllowed: true, type: describe_configs }
+          - { isAllowed: true, type: alter_configs }
+        conditions: []
+
+  # Knox
+  - name: tdp_user - tdpldap policy
+    description: tdp_user access to tdpldap policy
+    service: knox-tdp
+    isAuditEnabled: true
+    isEnabled: true
+    resources:
+      topology:
+        values: ["tdpldap"]
+      service:
+        values: ["*"]
+    policyItems:
+      - users: [tdp_user]
+        groups: []
+        delegateAdmin: true
+        accesses:
+          - { isAllowed: true, type: allow }
+        conditions: []

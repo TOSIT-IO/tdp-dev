@@ -1,0 +1,11 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+
+---
+- hosts: tdp-dev
+  tasks:
+    - include_vars: "{{ playbook_dir }}/../../tdp_config.yml"
+    - import_role:
+        name: tdp_manager
+        tasks_from: start
+

@@ -1,0 +1,78 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Ensures tdp-dev directories exist
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: vagrant
+    group: vagrant
+    recurse: yes
+  with_items:
+    - "{{ project_dir }}"
+    - "{{ project_dir }}/files"
+    - "{{ project_dir }}/inventory/topologies"
+
+- name: Check if tdp_lib repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_lib.dir }}"
+  register: lib_stat
+
+- name: Check if tdp_server repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_server.dir }}"
+  register: server_stat
+
+- name: Check if tdp_ui repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_ui.dir }}"
+  register: ui_stat
+
+- name: Clone TDP manager
+  git:
+    repo: "{{ item.feature.git_project_url }}"
+    dest: "{{ project_dir }}/{{ item.feature.dir }}"
+    version: "{{ item.feature.git_project_version }}"
+    force: true
+  environment: "{{ proxy_env }}"
+  when: item.feature.enabled and (clean_install or not item.exits )
+  with_items:
+    - {feature: "{{ tdp_lib }}", exits: "{{ lib_stat.stat.exists }}"}
+    - {feature: "{{ tdp_server }}", exits: "{{ server_stat.stat.exists }}"}
+    - {feature: "{{ tdp_ui }}", exits: "{{ ui_stat.stat.exists }}"}
+
+- name: Delete pyhon venv if clean_install
+  file:
+    path: "{{ project_dir }}/venv"
+    state: absent
+  when: clean_install
+
+- name: Install tdp-server and uvicorn
+  pip:
+    name:
+      - "{{ project_dir }}/tdp-server"
+      - uvicorn==0.16.0
+    editable: true
+    virtualenv: "{{ project_dir }}/venv"
+    virtualenv_python: "{{ python_bin }}"
+  environment: "{{ proxy_env }}"
+  when: tdp_server.enabled
+
+- name: Install tdp-lib
+  pip:
+    name:
+      - "{{ project_dir }}/tdp-lib[visualization]"
+    editable: true
+    virtualenv: "{{ project_dir }}/venv"
+    virtualenv_python: "{{ python_bin }}"
+  environment: "{{ proxy_env }}"
+  when: tdp_lib.enabled
+
+- name: Install required packages in the virtual environment
+  pip:
+    name: "{{ item }}"
+    virtualenv: "{{ project_dir }}/venv"
+    virtualenv_python: "{{ python_bin }}"
+  loop: "{{ required_python_packages }}"
+  environment: "{{ proxy_env }}"

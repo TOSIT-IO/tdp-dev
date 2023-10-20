@@ -1,0 +1,25 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Create symbolic link to 01_tdp inventory
+  file:
+    src: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ item.feature.dir }}/topology.ini"
+    dest: "{{ project_dir }}/inventory/topologies/{{ item.dest_file }}"
+    state: link
+  when: item.feature.enabled
+  with_items:
+    - {feature: "{{ tdp_collection_core }}", dest_file: "01_tdp" }
+    - {feature: "{{ tdp_collection_prerequisites }}", dest_file: "prerequisites" }
+    - {feature: "{{ tdp_collection_extras }}", dest_file: "extras" }
+    - {feature: "{{ tdp_collection_observability }}", dest_file: "observability" }
+
+- name: Create symbolic link to files
+  file:
+    src: "{{ project_dir }}/files"
+    dest: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ item.dir }}/playbooks/files"
+    state: link
+  when: item.enabled
+  with_items:
+    - "{{ tdp_collection_core }}"
+    - "{{ tdp_collection_extras }}"
+    - "{{ tdp_collection_observability }}"

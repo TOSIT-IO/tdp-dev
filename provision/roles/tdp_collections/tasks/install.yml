@@ -1,0 +1,57 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Ensures {{ project_dir }}/{{ tdp_collections_dir }} exists
+  become: true
+  file:
+    path: "{{ project_dir }}/{{ tdp_collections_dir }}"
+    state: directory
+    owner: vagrant
+    group: vagrant
+    recurse: yes
+
+- name: Check if tdp_collection_core repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ tdp_collection_core.dir }}"
+  register: core_stat
+
+- name: Check if tdp_collection_extras repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ tdp_collection_extras.dir }}"
+  register: extras_stat
+
+- name: Check if tdp_collection_observability repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ tdp_collection_observability.dir }}"
+  register: observability_stat
+
+- name: Check if tdp_collection_prerequisites repos already exists
+  stat:
+    path: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ tdp_collection_prerequisites.dir }}"
+  register: prerequisites_stat
+
+- name: Clone TDP collections
+  git:
+    repo: "{{ item.feature.git_project_url }}"
+    dest: "{{ project_dir }}/{{ tdp_collections_dir }}/{{ item.feature.dir }}"
+    version: "{{ item.feature.git_project_version }}"
+    force: true
+  environment: "{{ proxy_env }}"
+  when: item.feature.enabled and (clean_install or not item.exits )
+  with_items:
+    - {feature: "{{ tdp_collection_core }}", exits: "{{ core_stat.stat.exists }}"}
+    - {feature: "{{ tdp_collection_extras }}", exits: "{{ extras_stat.stat.exists }}"}
+    - {feature: "{{ tdp_collection_observability }}", exits: "{{ observability_stat.stat.exists }}"}
+    - {feature: "{{ tdp_collection_prerequisites }}", exits: "{{ prerequisites_stat.stat.exists }}"}
+
+- name: Install additional ansible collections
+  command: "{{ project_dir }}/venv/bin/ansible-galaxy collection install {{ item.name }}:=={{ item.version }}"
+  with_items: "{{ additional_ansible_collections }}"
+  args:
+    chdir: "{{ project_dir }}"
+
+- name: Install additional ansible roles
+  command: "{{ project_dir }}/venv/bin/ansible-galaxy role install {{ item.name }},{{ item.version }}"
+  with_items: "{{ additional_ansible_roles }}"
+  args:
+    chdir: "{{ project_dir }}"

@@ -1,0 +1,40 @@
+# Copyright 2022 TOSIT.IO
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Reset tdp_vars and database if clean_install
+  become: true
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ sqlite_db_path }}"
+    - "{{ project_dir }}/inventory/tdp_vars/tdp-cluster"
+    - "{{ project_dir }}/inventory/tdp_vars/grafana"
+    - "{{ project_dir }}/inventory/tdp_vars/prometheus"
+  when: clean_install
+
+- name: tdp-lib init
+  command: | 
+    {{ project_dir }}/venv/bin/tdp init --overrides {{ tdp_vars_overrides }}
+  args:
+    chdir: "{{ project_dir }}"
+
+- name: tdp-server init
+  command: | 
+    {{ project_dir }}/venv/bin/python tdp-server/tdp_server/initialize_database.py
+    {{ project_dir }}/venv/bin/python tdp-server/tdp_server/initialize_tdp_vars.py
+  args:
+    chdir: "{{ project_dir }}"
+
+- name: tdp-ui init
+  command: | 
+    /usr/bin/npm install ./{{ tdp_ui.dir }}
+  args:
+    chdir: "{{ project_dir }}"
+  environment: "{{ proxy_env }}"
+
+- name: tdp-ui generate the API client SDK
+  command: | 
+    /usr/bin/npm --prefix ./{{ tdp_ui.dir }} run generate
+  args:
+    chdir: "{{ project_dir }}"

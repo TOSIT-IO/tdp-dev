@@ -1,0 +1,73 @@
+# reset collections, tdp_vars, database and python venv
+clean_install: false
+
+project_dir: /opt/tdp-dev
+tdp_collections_dir: ansible_collections/tosit
+python_bin: python3.9
+
+# TDP manager
+tdp_lib:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-lib.git
+  # The git branche tag or commit
+  git_project_version: 0.1
+  dir: tdp-lib
+
+tdp_server:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-server.git
+  # The git branche tag or commit
+  git_project_version: 0.1
+  dir: tdp-server
+  port: 8000
+
+tdp_ui:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-ui.git
+  # The git branche tag or commit
+  git_project_version: 0.1
+  dir: tdp-ui
+  port: 3000
+
+# TDP Collections
+tdp_collection_prerequisites:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-collection-prerequisites.git
+  # The git branche tag or commit (v0.1 is d67f0ae)
+  git_project_version: master
+  dir: tdp_prerequisites
+
+# Must be enabled if one of other tdp collections is enabled
+tdp_collection_core:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-collection.git
+  # The git branche tag or commit
+  git_project_version: master
+  dir: tdp
+
+tdp_collection_extras:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-collection-extras.git
+  # The git branche tag or commit (v0.1 is e50f4fe)
+  git_project_version: master
+  dir: tdp_extra
+
+tdp_collection_observability:
+  enabled: true
+  git_project_url: https://github.com/TOSIT-IO/tdp-observability.git
+  # The git branche tag or commit
+  git_project_version: main
+  dir: tdp_observability
+
+# If you need HTTP proxy to reach internet
+http_proxy: ""
+https_proxy: ""
+no_proxy: ""
+
+proxy_env:
+  http_proxy: "{{ http_proxy | default ('') }}"
+  HTTP_PROXY: "{{ http_proxy | default ('') }}"
+  https_proxy: "{{ https_proxy | default ('') }}"
+  HTTPS_PROXY: "{{ https_proxy | default ('') }}"
+  no_proxy: "{{ no_proxy | default ('') }}"
+  NO_PROXY: "{{ no_proxy | default ('') }}"
