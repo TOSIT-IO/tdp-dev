@@ -81,8 +81,8 @@ tdp_extras_binaries:
     url: "https://github.com/TOSIT-IO/incubator-livy/releases/download/v0.8.0-incubating-TDP-0.1.0/apache-livy-0.8.0-incubating-TDP-0.1.0-SNAPSHOT-bin.zip"
   - name: "hue-release-4.10.0-TDP-0.1.0.tar.gz"
     url: "https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.10.0-TDP-0.1.0-python36/hue-release-4.10.0-TDP-0.1.0.tar.gz"
-  - name: "hue-release-4.10.0-TDP-0.1.0-python36.tar.gz"
-    url: "https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.10.0-TDP-0.1.0-python36/hue-release-4.10.0-TDP-0.1.0-python36.tar.gz"
+  - name: "hue-release-4.11.0-TDP-0.1.0-python38.tar.gz"
+    url: "https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.11.0-TDP-0.1.0-python38/hue-release-4.11.0-TDP-0.1.0-python38.tar.gz"
 
 tdp_observability_binaries:
   - name: "node_exporter-1.3.1.linux-amd64.tar.gz"
