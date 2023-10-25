@@ -13,6 +13,7 @@
     - "{{ project_dir }}"
     - "{{ project_dir }}/files"
     - "{{ project_dir }}/inventory/topologies"
+    - "{{ project_dir }}/logs"
 
 - name: Check if tdp_lib repos already exists
   stat:
