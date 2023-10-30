@@ -67,12 +67,14 @@ Vagrant.configure("2") do |config|
       end # end provider virtualbox
 
       cfg.vm.provider :libvirt do |libvirt|
+        libvirt.default_prefix = '' # fix gui name for VM
         libvirt.cpus = cpus
         libvirt.memory = memory
         libvirt.qemu_use_session = false
+
         if hostname == "tdp-dev"
           # Create synced folder
-          config.vm.synced_folder "tdp-dev-sync/", project_dir
+          config.vm.synced_folder "tdp-dev-sync/", project_dir, type: "nfs", mount_options: ["vers=3,tcp"]
           # Forward TDP UI and server port
           cfg.vm.network "forwarded_port", guest: tdp_server_port, host: tdp_server_port, id: 'tdp-server'
           cfg.vm.network "forwarded_port", guest: tdp_ui_port, host: tdp_ui_port, id: 'tdp-ui'

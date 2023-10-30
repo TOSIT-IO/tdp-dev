@@ -17,6 +17,7 @@ This is the default provider, no plugin needed.
 ### Libvirt provider
 
 - Vagrant libvirt plugin (vagrant-libvirt) >= 0.9.0
+- NFS server system package to use the nfs synced folder.
 
 Follow documentation to install it https://vagrant-libvirt.github.io/vagrant-libvirt/.
 
@@ -52,15 +53,16 @@ vagrant up
 
 The `tdp_config.yml` file allows you to customize various aspects of TDP dev installation. 
 
-| Configuration Option        | Description                                             | Default Value     |
-|----------------------------|---------------------------------------------------------|-------------------|
+| Configuration Option        | Description                                                           | Default Value     |
+|----------------------------|------------------------------------------------------------------------|-------------------|
+| vagrant_provider           | vagrant provider you are using.                                        | `virtualbox`
 | clean_install              | Reset collections, TDP vars, database, and Python virtual environment. | `false` |
-| project_dir                | Location where TDP will be installed.                 | `/opt/tdp-dev` |
-| tdp_collections_dir        | Directory for TDP collections inside project_dir. | `ansible_collections/tosit` |
-| python_bin                 | Specify the Python binary for installation.           | `python3.9` |
-| http_proxy                 | HTTP proxy URL.                                        | empty |
-| https_proxy                | HTTPS proxy URL.                                       | empty |
-| no_proxy                   | Domains to exclude from proxy.                        | empty |
+| project_dir                | Location where TDP will be installed.                                  | `/opt/tdp-dev` |
+| tdp_collections_dir        | Directory for TDP collections inside project_dir.                      | `ansible_collections/tosit` |
+| python_bin                 | Specify the Python binary for installation.                            | `python3.9` |
+| http_proxy                 | HTTP proxy URL.                                                        | empty |
+| https_proxy                | HTTPS proxy URL.                                                       | empty |
+| no_proxy                   | Domains to exclude from proxy.                                         | empty |
 
 ### Feature Configuration
 

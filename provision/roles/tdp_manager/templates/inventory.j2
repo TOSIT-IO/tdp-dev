@@ -2,7 +2,7 @@
 
 {% for host, vars in hostvars.items() %}
 {% if host not in groups[exclude_group] %}
-{{ host }} ansible_ssh_user='vagrant' ansible_ssh_private_key_file='{{ project_dir }}/.vagrant/machines/{{ host }}/virtualbox/private_key' ip={{ vars.ip }} domain={{ vars.domain }}
+{{ host }} ansible_ssh_user='vagrant' ansible_ssh_private_key_file='{{ project_dir }}/.vagrant/machines/{{ host }}/{{ vagrant_provider }}/private_key' ip={{ vars.ip }} domain={{ vars.domain }}
 {% endif %}
 {% endfor %}
 

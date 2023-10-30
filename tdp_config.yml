@@ -1,3 +1,6 @@
+# vagrant provider in inventory template: virtualbox or libvirt
+vagrant_provider: virtualbox
+
 # reset collections, tdp_vars, database and python venv
 clean_install: false
 
