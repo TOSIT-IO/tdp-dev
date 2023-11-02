@@ -69,6 +69,8 @@ tdp_core_binaries:
     url: "https://github.com/TOSIT-IO/hbase-connectors/releases/download/2.3.4-1.0.0-0.0/hbase-spark-2.3.4-1.0.0-0.0.jar"
   - name: "hbase-hbck2-1.1.0-0.0.jar"
     url: "https://github.com/TOSIT-IO/hbase-operator-tools/releases/download/1.1.0-0.0/hbase-hbck2-1.1.0-0.0.jar"
+  - name: "jmx_prometheus_javaagent-0.16.1.jar"
+    url: "https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.16.1/jmx_prometheus_javaagent-0.16.1.jar"
 
 tdp_extras_binaries:
   - name: "kafka_2.13-2.8.2-TDP-0.1.0-SNAPSHOT.tgz"
@@ -89,8 +91,6 @@ tdp_observability_binaries:
     url: "https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz"
   - name: "postgres_exporter-0.12.0.linux-amd64.tar.gz"
     url: "https://github.com/prometheus-community/postgres_exporter/releases/download/v0.12.0/postgres_exporter-0.12.0.linux-amd64.tar.gz"
-  - name: "jmx_prometheus_javaagent-0.16.1.jar"
-    url: "https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.16.1/jmx_prometheus_javaagent-0.16.1.jar"
   - name: "prometheus-2.37.6.linux-amd64.tar.gz"
     url: "https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz"
   - name: "loki-2.7.2-linux-amd64.zip"
