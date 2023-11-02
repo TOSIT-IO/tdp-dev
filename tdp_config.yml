@@ -12,14 +12,14 @@ python_bin: python3.9
 tdp_lib:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-lib.git
-  # The git branche tag or commit
+  # Git branch, tag, or commit: "master", "0.1", ...
   git_project_version: 0.1
   dir: tdp-lib
 
 tdp_server:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-server.git
-  # The git branche tag or commit
+  # Git branch, tag, or commit: "master", "0.1", ...
   git_project_version: 0.1
   dir: tdp-server
   port: 8000
@@ -27,7 +27,7 @@ tdp_server:
 tdp_ui:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-ui.git
-  # The git branche tag or commit
+  # Git branch, tag, or commit: "master", "0.1", ...
   git_project_version: 0.1
   dir: tdp-ui
   port: 3000
@@ -36,7 +36,7 @@ tdp_ui:
 tdp_collection_prerequisites:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-collection-prerequisites.git
-  # The git branche tag or commit (v0.1 is d67f0ae)
+  # Git branch, tag, or commit: "master", "0.1", ...
   git_project_version: master
   dir: tdp_prerequisites
 
@@ -44,21 +44,21 @@ tdp_collection_prerequisites:
 tdp_collection_core:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-collection.git
-  # The git branche tag or commit
+  # Git branch, tag, or commit: "master", "0.1", ...
   git_project_version: master
   dir: tdp
 
 tdp_collection_extras:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-collection-extras.git
-  # The git branche tag or commit (v0.1 is e50f4fe)
+  # Git branch, tag, or commit: "master", "0.1", ...
   git_project_version: master
   dir: tdp_extra
 
 tdp_collection_observability:
   enabled: true
   git_project_url: https://github.com/TOSIT-IO/tdp-observability.git
-  # The git branche tag or commit
+  # Git branch, tag, or commit: "main"
   git_project_version: main
   dir: tdp_observability
 

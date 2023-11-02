@@ -41,7 +41,7 @@ vagrant up --provider=libvirt
 ```
 
 You can change the default provider with environment variable.
-
+Please also set provider in tdp_config.yml, as explained in next section.
 ```bash
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 vagrant up
