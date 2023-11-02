@@ -56,7 +56,7 @@ tdp_collection_extras:
   dir: tdp_extra
 
 tdp_collection_observability:
-  enabled: true
+  enabled: false
   git_project_url: https://github.com/TOSIT-IO/tdp-observability.git
   # Git branch, tag, or commit: "main"
   git_project_version: main

@@ -70,6 +70,8 @@ The main features of TDP are:
 - **TDP Manager:** [TDP-Lib](https://github.com/TOSIT-IO/tdp-lib), [TDP-Server](https://github.com/TOSIT-IO/tdp-server), and [TDP-UI](https://github.com/TOSIT-IO/tdp-ui).
 - **TDP Collections:** [core](https://github.com/TOSIT-IO/tdp-collection), [prerequisites](https://github.com/TOSIT-IO/tdp-collection-prerequisites), [extras](https://github.com/TOSIT-IO/tdp-collection-extras), and [observability](https://github.com/TOSIT-IO/tdp-observability).
 
+tdp-observability is disabled by default. Plan to increase CPU and Memory allocated to master-03 when enabling tdp-observability.
+
 Please note that TDP Collection core is mandatory if any other TDP Collection is enabled. Similarly, TDP-Server is mandatory if TDP-UI is enabled.
 
 | Configuration Option | Description                    |
