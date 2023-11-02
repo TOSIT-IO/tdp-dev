@@ -25,6 +25,7 @@
     {{ project_dir }}/venv/bin/python tdp-server/tdp_server/initialize_tdp_vars.py
   args:
     chdir: "{{ project_dir }}"
+  when : tdp_server.enabled
 
 - name: tdp-ui init
   command: | 
@@ -32,9 +33,11 @@
   args:
     chdir: "{{ project_dir }}"
   environment: "{{ proxy_env }}"
+  when : tdp_ui.enabled
 
 - name: tdp-ui generate the API client SDK
   command: | 
     /usr/bin/npm --prefix ./{{ tdp_ui.dir }} run generate
   args:
     chdir: "{{ project_dir }}"
+  when : tdp_ui.enabled
