@@ -104,8 +104,6 @@ To deploy a TDP cluster, follow these steps:
 vagrant ssh tdp-dev
 # Move into project dir
 cd /opt/tdp-dev
-# Activate Python virtual env and set environment variables
-source ./venv/bin/activate && source .env
 # Configure TDP prerequisites
 ansible-playbook ansible_collections/tosit/tdp_prerequisites/playbooks/all.yml
 ```
@@ -121,8 +119,6 @@ You have multiple options to deploy a TDP cluster:
 vagrant ssh tdp-dev
 # Move into project dir
 cd /opt/tdp-dev
-# Activate Python virtual env and set environment variables
-source ./venv/bin/activate && source .env
 # Deploy TDP cluster core and extras services
 tdp deploy
 ```
@@ -169,8 +165,6 @@ After deploying the TDP cluster, perform the following post-installation tasks:
 vagrant ssh tdp-dev
 # Move into project dir
 cd /opt/tdp-dev
-# Activate Python virtual env and set environment variables
-source ./venv/bin/activate && source .env
 # Configure HDFS user home directories
 ansible-playbook ansible_collections/tosit/tdp/playbooks/utils/hdfs_user_homes.yml
 # Configure Ranger policies

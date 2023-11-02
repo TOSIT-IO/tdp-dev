@@ -77,3 +77,8 @@
     virtualenv_python: "{{ python_bin }}"
   loop: "{{ required_python_packages }}"
   environment: "{{ proxy_env }}"
+
+- name: Activate tdp-dev venv by default
+  ansible.builtin.lineinfile:
+    path: "~/.bashrc"
+    line: "source {{ project_dir }}/venv/bin/activate && source {{ project_dir }}/.env"
