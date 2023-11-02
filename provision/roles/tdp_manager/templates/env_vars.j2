@@ -20,6 +20,3 @@ export DATABASE_DSN={{ tdp_database_dsn }}
 export UVICORN_PORT={{ tdp_server.port }}
 export DO_NOT_USE_IN_PRODUCTION_DISABLE_TOKEN_CHECK=True
 {% endif %}
-
-# Fix : ERROR: Ansible could not initialize the preferred locale
-export LC_ALL=C.UTF-8
