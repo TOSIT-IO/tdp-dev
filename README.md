@@ -36,18 +36,19 @@ Should also work with system python if ansible is installed.
 ## Launch cluster
 
 ```bash  
-# With default virtualbox provider
+# With default provider
 vagrant up
 # With libvirt provider
 vagrant up --provider=libvirt
 ```
 
 You can change the default provider with environment variable.
-Please also set provider in tdp_config.yml, as explained in next section.
+Add it to your rc shell file to makes it permanent. 
 ```bash
 export VAGRANT_DEFAULT_PROVIDER=libvirt
-vagrant up
 ```
+
+Please also set provider in tdp_config.yml, as explained in next section.
 
 **Important:** The Vagrantfile create an internal network so you must not run Vagrant in parallel because the internal network can be created multiple times leading to undefined behavior. With the Libvirt provider, VMs are launch in parallel so, if you want speed, use Libvirt provider.
 
