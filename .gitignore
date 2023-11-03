@@ -8,4 +8,6 @@ venv
 tdp-dev-sync/
 !inventory
 topologies
+!ansible.cfg
+!test-cluster-deployment.yml
 !tdp_vars_overrides
