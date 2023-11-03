@@ -21,19 +21,21 @@ This is the default provider, no plugin needed.
 
 Follow documentation to install it https://vagrant-libvirt.github.io/vagrant-libvirt/.
 
-## Setup python environment
+### Optional: Setup dedicated python virtual environment
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+# Activate Python virtual env
+source ./venv/bin/activate
 ```
+
+Should also work with system python if ansible is installed.
 
 ## Launch cluster
 
-```bash
-# Activate Python virtual env
-source ./venv/bin/activate
+```bash  
 # With default virtualbox provider
 vagrant up
 # With libvirt provider
