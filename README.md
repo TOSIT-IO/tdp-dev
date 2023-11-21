@@ -1,4 +1,4 @@
-# TDP dev
+# TDP Dev
 
 Launch a fully-featured virtual TDP Hadoop cluster with a single command _or_ customize the infrastructure.
 
@@ -48,9 +48,9 @@ Add it to your rc shell file to makes it permanent.
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 ```
 
-Please also set provider in tdp_config.yml, as explained in next section.
+Please also set provider in `tdp_config.yml`, as explained in next section.
 
-**Important:** The Vagrantfile create an internal network so you must not run Vagrant in parallel because the internal network can be created multiple times leading to undefined behavior. With the Libvirt provider, VMs are launch in parallel so, if you want speed, use Libvirt provider.
+**Important:** The `Vagrantfile` creates an internal network so you must not run Vagrant in parallel because the internal network can be created multiple times leading to undefined behavior. With the Libvirt provider, VMs are launch in parallel so, if you want speed, use Libvirt provider.
 
 ## Configuration
 
@@ -70,12 +70,12 @@ The `tdp_config.yml` file allows you to customize various aspects of TDP dev ins
 ### Feature Configuration
 
 The main features of TDP are:
-- **TDP Manager:** [TDP-Lib](https://github.com/TOSIT-IO/tdp-lib), [TDP-Server](https://github.com/TOSIT-IO/tdp-server), and [TDP-UI](https://github.com/TOSIT-IO/tdp-ui).
+- **TDP Manager:** [TDP Lib](https://github.com/TOSIT-IO/tdp-lib), [TDP Server](https://github.com/TOSIT-IO/tdp-server), and [TDP UI](https://github.com/TOSIT-IO/tdp-ui).
 - **TDP Collections:** [core](https://github.com/TOSIT-IO/tdp-collection), [prerequisites](https://github.com/TOSIT-IO/tdp-collection-prerequisites), [extras](https://github.com/TOSIT-IO/tdp-collection-extras), and [observability](https://github.com/TOSIT-IO/tdp-observability).
 
 tdp-observability is disabled by default. Plan to increase CPU and Memory allocated to master-03 when enabling tdp-observability.
 
-Please note that TDP Collection core is mandatory if any other TDP Collection is enabled. Similarly, TDP-Server is mandatory if TDP-UI is enabled.
+Please note that the core TDP collection is mandatory if any other TDP collection is enabled. Similarly, TDP Server is mandatory if TDP UI is enabled.
 
 | Configuration Option | Description                    |
 |----------------------|--------------------------------|
@@ -115,7 +115,7 @@ ansible-playbook ansible_collections/tosit/tdp_prerequisites/playbooks/all.yml
 
 You have multiple options to deploy a TDP cluster:
 
-### Option 1: Deploy with TDP lib CLI
+### Option 1: Deploy with TDP Lib CLI
 
 ```bash
 # Connect to tdp-dev
@@ -136,11 +136,11 @@ Access the TDP UI at http://localhost:3000/ on your local machine.
 
 You can see the deployment in the "Deployments" page. Wait deployment to complete.
 
-### Option 3: Deploy with TDP server API
+### Option 3: Deploy with TDP Server API
 
-You can access the TDP server at http://localhost:8000/ on your local machine.
+You can access the TDP Server at http://localhost:8000/ on your local machine.
 
-Run the following command to deploy TDP:
+Run the following command to deploy a TDP cluster:
 
 ```bash
 # Deploy TDP cluster core and extras services
