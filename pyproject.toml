@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "tdp-dev"
+version = "0.1.0"
+description = "tdp-dev dependencies"
+authors = ["Stephan Baum <stephan.baume-consultant@dgfip.finances.gouv.fr>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/TOSIT-FR/tdp-dev"
+repository = "https://github.com/TOSIT-FR/tdp-dev"
+documentation = "https://github.com/TOSIT-FR/tdp-dev"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.9.0,<4.0"
+tdp-lib = { path = "tdp-lib", develop = true, extras=["visualization", "mysql", "postgresql-binary"] }
+passlib = "1.7.4"
+jmespath = "1.0.1"
+ansible-lint = {version = "6.17.2", markers = "platform_system != 'Windows'"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
