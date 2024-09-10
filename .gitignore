@@ -1,0 +1,10 @@
+sqlite.db
+venv*
+logs/tdp.log
+files
+.ansible
+.cache
+.poetrycache
+.vagrant*
+ansible_collections/community*
+tdp_vars
