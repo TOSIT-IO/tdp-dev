@@ -1,0 +1,4 @@
+---
+knox_start_on_boot: yes
+
+knox_restart: always
