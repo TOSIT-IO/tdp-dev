@@ -1,0 +1,5 @@
+---
+spark_hs_start_on_boot: yes
+
+spark_hs_restart: always
+spark2_hs_heapsize: 512m
