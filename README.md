@@ -18,13 +18,13 @@ To clone the project along with all its submodules at the latest commit on the `
 1. **Clone the main repository**:
 
     ```sh
-    git clone https://github.com/TOSIT-IO/manager.git
+    git clone https://github.com/TOSIT-IO/tdp-dev.git
     ```
 
 2. **Navigate to the directory**:
 
     ```sh
-    cd manager
+    cd tdp-dev
     ```
 
 3. **Clone the Required Submodules**:
