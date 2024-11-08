@@ -4,135 +4,116 @@ Use this repository to have a working directory where you run deploy commands wi
 
 ## Requirements
 
-- Libvirt or Virtualbox
-- Vagrant
-- Docker
-- Python3
+- Libvirt
+- Docker and Docker Compose
 
 ## Quickstart
 
 The below steps will deploy a TDP cluster with all features so you MUST install all requirements.
 
-If Vagrant is enabled, the Ansible hosts.ini file will be generated using the hosts variable in tdp-vagrant/vagrant.yml.
+### Clone the Project and Submodules
 
-### Clone the project ans submodules
+To clone the project along with all its submodules at the latest commit on the `master/main` branch, use the following command:
 
-Clone the project with every submodule to that last commit on the `master/main` branch.
+1. **Clone the main repository**:
+
+    ```sh
+    git clone https://github.com/TOSIT-IO/manager.git
+    ```
+
+2. **Navigate to the directory**:
+
+    ```sh
+    cd manager
+    ```
+
+3. **Clone the Required Submodules**:
+
+    You can edit the `.gitmodules` file if you want to remove any collections. 
+
+    The available submodules are: **ansible_collections/tosit/tdp**, **ansible_collections/tosit/tdp_prerequisites**, **tdp-vagrant**, **tdp-lib**, **ansible_collections/tosit/tdp_extra** (optional), and **ansible_collections/tosit/tdp_observability** (optional). 
+
+    To clone a specific submodule, use the following command:
+
+    ```sh
+    git submodule update --init --remote <submodule-path>
+    ```
+
+    To update all cloned submodules later, run:
+
+    ```sh
+    git submodule update --recursive --remote
+    ```
+
+### Setup manager Containers
+Two Docker containers are provided with the necessary dependencies for TDP installation:
+
+- **manager Container**: This container includes all required dependencies, such as Vagrant with libvirt, Ansible, and Python 3.
+- **Firefox Container**: This container enables access to the component web UI links from your host. It includes the configuration of etc/hosts, browser settings, importing the TDP SSL certificate into the browser, and configuring the Kerberos client.
+
+To start both containers, run:
 
 ```sh
-git clone --recursive https://github.com/TOSIT-IO/tdp-dev.git
-```
-
-Clone the main repository and manually chose the submodules. *NB*: the `ansible_collections/tosit/tdp` repository is manadatory. All submodules can be found in the `.gitmodules` file.
-
-```sh
-# Clone the main repository
-git clone https://github.com/TOSIT-IO/tdp-dev.git
-# enter the directory
-cd tdp-dev
-# Clone the submodule example:`git submodule update --init ansible_collections/tosit/tdp
-git submodule update --init --remote <submodule-path>
-```
-
-To update all cloned submodules if necessary:
-
-```sh
-git submodule update --recursive --remote
+docker compose up -d
 ```
 
 ### Setup the virtual machines
 
-In the main project directory the machines indicated in the `tdp-vagrant/vagrant.yml` are started on your host with Vagrant. HoweverAnsible is requested to provision the machines and cretae the inventory file. Therefore, create a virtual environment with Python3 and install Ansible.
+After the manager container is up and running, you can access it using this command :
 
 ```sh
-python3 -m venv venv-vagrant
-source venv-vagrant/bin/activate
-pip install ansible
+docker compose exec -it manager bash
 ```
 
-Now start the machines:
+Once inside the container, execute the vagrant up command. You can define `vagrant.yml` file to update the machine resources according to your machine's RAM and core count. The file `tdp-vagrant/vagrant.yml` contains default values.
 
 ```sh
 vagrant up
 ```
 
-It moreover creates the `hosts.ini` file in the `inventory` directory later used by Ansible. for each modification of the `tdp-vagrant/vagrant.yml` file or destruction of the VMs it is recommended to remove the `hosts.ini` file and let it be generated again. However, since the private ssh key paths are absolute and will not match inside a container, lets transform them to realtive paths by removing everything before the `/.vagrant/machine`:
+### Download Component Releases
 
-```sh
-sed -i "s|\(ansible_ssh_private_key_file='\)[^']*/\.vagrant/machines|\1.vagrant/machines|" .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+The `scripts/tdp-release-uris.json` file contains the URIs for the TDP stack component releases as of version 1.1. Please note that these URIs may become outdated and may require manual adjustment over time. To download releases for specific collections (`tdp-collection`, `tdp-observability`, `tdp-extras`), or to download all collections, use the following commands:
+
+For a specific collection:
+```bash
+./scripts/download_releases.sh <collection>
+```
+Example:
+```bash
+./scripts/download_releases.sh tdp-collection
 ```
 
-### Ansible setup
-
-Ansible configuration has been preconfigured for the Vagrant setup in the `ansible.cfg` file and symbolic links have alredy been set in `inventory/topologies/` to the different collections' topology files.
-
-The configured ansible uses the ssh keys created by vagrant for the machines and their path is mentioned in the `hosts.ini` file.
-
-If you use your own infrastructure, modify the configuration accordingly.
-
-### TDP-dev python environment setup
-
-Now to setup the python dependecis for TDP-dev which are marked in the poetry.lock file at the root of the project we are going to use a container.
-
-First build the image and run the container:
-
-```sh
-# Build command:
-docker build -t tdp-dev dev
-
-# Run command:
-docker run --rm -it -v $PWD:/home/tdp/tdp-dev --network=host --env CONTAINER_UID=$(id -u) --env CONTAINER_GID=$(id -g) --env DISPLAY=$DISPLAY tdp-dev
+For all collections:
+```bash
+./scripts/download_releases.sh all
 ```
 
-Inside the container create the `venv-dev` virtual environment which will contain all dependencies to deploy all TDP collections.
+### Setup TDP-lib development dependecies
+
+TDP lib is a Python library that enhances Ansible for cluster management, allowing users to define task relationships in a directed acyclic graph (DAG) and manage variables centrally.
+
+To install the dependencies and the package in a virtual environment inside the `manager` container, use the following commands:
 
 ```sh
-python -m venv venv-dev
-source venv-dev/bin/activate
-poetry install
-```
-
-TDP-lib is contained in the dependencies but not its development dependencies.
-
-### Download the component releases
-
-The text file `scripts/tdp-release-uris.txt` contains uris to the component releases of the stack TDP 1.1 to this date. They might be outdated and not correspond to the versions set in the collections after a certain time. you may have to ajust the uris in this case.
-
-Download the relases from in the `files`directory with the `download_releases.sh` file from the container:
-
-```sh
-./scripts/download_releases.sh
-```
-
-### Setup TDP-lib development dependecies (optional)
-
-If you desire de develop TDP-lib with pytest, use the linter ruff, you will have to install all dependencies contained in the pyproject.toml of the `tdp-lib` directory. However, since they might be conflicting with the ones in the tdp-dev pyproject.toml, they must be setup in a different environment.
-
-Inside the container create the `venv-lib` virtual environment and install the dependencies:
-
-```sh
-python -m venv venv-lib
-source venv-lib/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 poetry install -C tdp-lib -E visualization -E mysql -E postgresql-binary
 ```
 
-Read the `tdp-lib` documentation for more information.
-
 ### Prerequisites
 
-Before starting to deploy TDP components, the TDP collection prerequisites must be run first which sets up the VMs and installs certain programms.
+Before deploying TDP components, you need to run the TDP collection prerequisites to set up the VMs and install required programs.
 
-Either in your host or in the container depending on where you have Ansible installed, you first have to install the Ansible Galaxy collections `general`, `crypto` and `postgresql` as follows.
+Start by entering the `manager` container and installing the necessary Ansible Galaxy collections.
 
 ```sh
-ansible-galaxy collection install community.general
-ansible-galaxy collection install community.crypto
-ansible-galaxy collection install community.postgresql
+ansible-galaxy collection install community.general community.crypto community.postgresql
 ```
 
-Now if your internet connection is using a proxy, set it up in the commented out variables `http_proxy` and `https_proxy` variables of the `inventory/group_vars/all.yml` file.
+If your internet connection uses a proxy, configure the `http_proxy` and `https_proxy` variables in the `inventory/group_vars/all.yml` file.
 
-Then you can install the `tdp_prerequisites` collection as follows:
+Finally, run the following command to install the `tdp_prerequisites` collection:
 
 ```sh
 ansible-playbook ansible_collections/tosit/tdp_prerequisites/playbooks/all.yml
@@ -140,94 +121,104 @@ ansible-playbook ansible_collections/tosit/tdp_prerequisites/playbooks/all.yml
 
 ### Deploying TDP
 
-TDP can either be deployed with the manager or directly with Ansible.
+TDP can be deployed in two ways: using the manager or directly with Ansible. Before you start, you need to set up the `tdp_vars` that Ansible will use.
 
-**Deploying it directly with Ansible is not recommended** as it will take the default variables in the default variables itf the `tdp_vars` folder has not been created yet and gives you less flexibility. **It is recommended to use the manager**.
+#### Step 1: Configure Environment Variables
 
-**Note:** If you are deploying TDP Observability you either have to set the values in `tdp_vars/prometheus/alertmanager.yml` for the the variables `alertmanager_receivers` and `alertmanager_route` if you want to setup the alertmanager or not deploy it by commenting out the `[alertmanager:children]` in the `topology.ini` of TDP Observability.
+1. **Edit the `.env` file**:
+   - Set the `TDP_COLLECTION_PATH` variable to include all necessary TDP collections. Remove any collections you do not want to include.
+   - SQLite is set as the default database. If you want to use a different database, update the `TDP_DATABASE_DSN` value.
 
-1. Deploying it directly with Ansible:
+2. **Source the file**:
+   ```sh
+   source venv/bin/activate && source .env 
+   ```
 
-    ```sh
-    # Deploying TDP collection
-    ansible-playbook ansible_collections/tosit/tdp/playbooks/meta/all_per_service.yml
-    # Deploying TDP collection extra
-    ansible-playbook ansible_collections/tosit/tdp_extra/playbooks/meta/all_per_service.yml
-    # Deploying TDP collection observability
-    ansible-playbook ansible_collections/tosit/tdp_observability/playbooks/meta/all_per_service.yml
-    ```
+#### Step 2: Initialize TDP
 
-2. Deploying it with TDP-Lib:
+- Run the following command to initialize the database and create the `tdp_vars` directory with the `tdp_vars_overrides` variables:
+   ```sh
+   tdp init --overrides tdp_vars_overrides
+   ```
 
-    The `TDP_COLLECTION_PATH` variable in the`.env` file is set for all TDP collections. Remove a collection from the path if you do not desire it. SQLite has been chosen by default as database. Change the `TDP_DATABASE_DSN` value if you desire another one. Then source the file:
+**Note:** If you are deploying TDP Observability, configure the `alertmanager_receivers` and `alertmanager_route` variables in `tdp_vars/prometheus/alertmanager.yml` to set up Alertmanager. Alternatively, comment out the `[alertmanager:children]` section in the `topology.ini` file of TDP Observability if you wish to skip its deployment.
 
-    ```sh
-    source .env
-    ```
+#### Step 3: Deployment Options
 
-    Initialize the database and create the `tdp_vars` directory with the `tdp_vars_overrides` variables:
+##### Option 1: Deploying Directly with Ansible
 
-    ```sh
-    tdp init --overrides tdp_vars_overrides
-    ```
+Run the following commands to deploy the TDP collections:
 
-    Make the DAG of operations:
+```sh
+# Deploying the main TDP collection
+ansible-playbook ansible_collections/tosit/tdp/playbooks/meta/all_per_service.yml
 
-    ```sh
-    tdp plan dag
-    ```
+# Deploying additional TDP collection
+ansible-playbook ansible_collections/tosit/tdp_extra/playbooks/meta/all_per_service.yml
 
-    Execute the DAG:
+# Deploying TDP Observability collection
+ansible-playbook ansible_collections/tosit/tdp_observability/playbooks/meta/all_per_service.yml
+```
 
-    ```sh
-    tdp deploy
-    ```
+##### Option 2: Deploying with TDP-Lib
 
-Execute the playbooks to create the `tdp_user` and give him the permissions in ranger.
+Create the Directed Acyclic Graph (DAG) of operations:
+   ```sh
+   tdp plan dag
+   ```
+
+Execute the DAG:
+
+   ```sh
+   tdp deploy
+   ```
+
+#### Step 4: Post-Installation Tasks
+
+After deploying the TDP cluster, run the playbooks to create the `tdp_user` and assign the necessary permissions in Ranger:
 
 ```sh
 ansible-playbook ansible_collections/tosit/tdp/playbooks/utils/hdfs_user_homes.yml
 ansible-playbook ansible_collections/tosit/tdp/playbooks/utils/ranger_policies.yml
-```
+``` 
 
-## Web UI links
+## Web UI
 
-To access the components web UI links on your host , you will have to setup the IP adresses with their respective FQDN in `etc/hosts`, introduce the SSL certificate into your browser and install and configure Kerberos client. Luckely a container image has been created where verything is alraedy setup.
+To access the component web UIs from your host, a Firefox container with Kerberos client configuration is started using Docker Compose.
 
-### Firefox container
+### Firefox Container
 
-1. Build the container:
+1. **Access the Container**:
 
-    ```sh
-    docker build -t firefox-kerberos -f firefox-container/Dockerfile .
-    ```
+   Use the following command to enter the Firefox container:
 
-2. Run the container:
+   ```sh
+   docker compose exec -it firefox bash
+   ```
 
-    ```sh
-    # Give display access to the root user
-    xhost +local:root
-    # Run the container
-    docker run --rm -it \
-    -e DISPLAY=$DISPLAY \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v $HOME/.Xauthority:/root/.Xauthority \
-    firefox-kerberos
-    ```
-3. Inside the container create a Kerberos ticket for example:
+2. **Create a Kerberos Ticket**:
 
-    ```sh
-    # Do a ticket demand
-    kinit tdp_user@REALM.TDP
-    # Type password
-    tdp_user123
-    ```
+   Inside the container, authenticate the tdp_user with their Kerberos principal by executing the following command:
 
-4. Launch the browser and access the web UIs:
+   ```sh
+    echo 'tdp_user123' | kinit tdp_user@REALM.TDP
+   ```
 
-    ```sh
-    firefox-esr
-    ```
+3. **Run the Setup Script**:
+
+   The setup script will configure the IP addresses and their respective FQDNs in `etc/hosts`, install the TDP SSL certificate into the browser, and set up SPNEGO for Kerberos authentication over HTTP.
+
+   ```sh
+   ./setup_for_tdp.sh
+   ```
+
+4. **Launch the Browser**:
+
+   Finally, start Firefox to access the web UIs:
+
+   ```sh
+   firefox
+   ```
 
 ### TDP links
 
@@ -241,6 +232,18 @@ To access the components web UI links on your host , you will have to setup the 
 - [Spark History Server](https://master-03.tdp:18081/)
 - [Spark3 History Server](https://master-03.tdp:18083/)
 - [Ranger Admin](https://master-03.tdp:6182/index.html)
+
+The Ranger UI can be accessed with the user `admin` and password `RangerAdmin123` (assuming default ranger_admin_password parameter).
+
+You can also access the WebUIs through Knox:
+
+- [HDFS NN](https://edge-01.tdp:8443/gateway/tdpldap/hdfs)
+- [YARN RM](https://edge-01.tdp:8443/gateway/tdpldap/yarn)
+- [MapReduce Job History Server](https://edge-01.tdp:8443/gateway/tdpldap/jobhistory)
+- [HBase Master](https://edge-01.tdp:8443/gateway/tdpldap/hbase/webui/master/master-status?host=master-01.tdp&port=16010)
+- [Spark History Server](https://edge-01.tdp:8443/gateway/tdpldap/sparkhistory)
+- [Spark3 History Server](https://edge-01.tdp:8443/gateway/tdpldap/spark3history)
+- [Ranger Admin](https://edge-01.tdp:8443/gateway/tdpldap/ranger)
 
 ### TDP Extra links
 
@@ -258,4 +261,89 @@ To access the components web UI links on your host , you will have to setup the 
 
 ```sh
 ansible-playbook ansible_collections/tosit/tdp_extra/playbooks/firewall_generic_stop.yml
+```
+
+## Connect to the Machine
+
+Inside the `manager` container, run the following command to connect to the edge node:
+
+```bash
+vagrant ssh edge-01
+```
+
+## Test Components
+
+Run the following commands from `edge-01` to test various components. 
+
+```bash
+sudo su - tdp_user
+kinit -ki
+```
+
+### Test HDFS Access
+
+To test HDFS access for `tdp_user`, run:
+
+```bash
+echo "This is the first line." | hdfs dfs -put - /user/tdp_user/test-file.txt
+echo "This is the second (appended) line." | hdfs dfs -appendToFile - /user/tdp_user/test-file.txt
+hdfs dfs -cat /user/tdp_user/test-file.txt
+```
+
+### Test Hive Interaction
+
+To interact with Hive using the Beeline CLI, run:
+
+```bash
+export hive_truststore_password='Truststore123!'
+
+# Connect to HiveServer2 using ZooKeeper
+beeline -u "jdbc:hive2://master-01.tdp:2181,master-02.tdp:2181,master-03.tdp:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2;sslTrustStore=/etc/ssl/certs/truststore.jks;trustStorePassword=${hive_truststore_password}"
+
+# Create the database
+CREATE DATABASE IF NOT EXISTS tdp_user LOCATION '/user/tdp_user/warehouse/tdp_user.db';
+USE tdp_user;
+
+# Show databases and tables
+SHOW DATABASES;
+SHOW TABLES;
+
+# Create and insert into a table
+CREATE TABLE IF NOT EXISTS table1 (
+  col1 INT COMMENT 'Integer Column',
+  col2 STRING COMMENT 'String Column'
+);
+INSERT INTO TABLE table1 VALUES (1, 'one'), (2, 'two');
+
+# Select from the table
+SELECT * FROM table1;
+```
+
+### Test HBase Access
+
+To access the HBase shell, run:
+
+```bash
+hbase shell
+```
+
+You can then run the following commands to test HBase:
+
+```bash
+list
+list_namespace
+create 'tdp_user_table', 'cf'
+put 'tdp_user_table', 'row1', 'cf:testColumn', 'testValue'
+scan 'tdp_user_table'
+disable 'tdp_user_table'
+drop 'tdp_user_table'
+``` 
+
+## Destroy the Cluster
+
+To destroy the cluster, execute the following commands inside the `manager` container:
+
+```bash
+vagrant destroy
+rm -rf .vagrant
 ```

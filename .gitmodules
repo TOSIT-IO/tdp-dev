@@ -22,6 +22,3 @@
 	path = tdp-vagrant
 	url = https://github.com/TOSIT-IO/tdp-vagrant.git
 	branch = master
-[submodule "tdp-incus"]
-	path = tdp-incus
-	url = https://github.com/TOSIT-IO/tdp-incus.git

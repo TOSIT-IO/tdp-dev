@@ -1,7 +1,8 @@
 sqlite.db
 venv*
 logs/tdp.log
-files
+/files/*
+!/files/.gitkeep
 .ansible
 .cache
 .vagrant*

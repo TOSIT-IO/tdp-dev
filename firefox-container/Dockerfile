@@ -1,30 +1,35 @@
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Kerberos client and common properties software
-RUN apt-get update && apt-get install -y \
-    krb5-user \
-    sssd-krb5 \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        wget \
+        gnupg2 \
+        krb5-user \
+        libcanberra-gtk-module \
+        libcanberra-gtk3-module \
+        libdbus-glib-1-2 \
+        libgl1 \
+        libegl1 \
+        libpci3 \
+        libnss3-tools \
+        dbus-x11 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install firefox-esr and libnss3-tools for certificate management
-RUN add-apt-repository ppa:mozillateam/ppa
-RUN apt install -y firefox-esr libnss3-tools
+# Install Firefox
+RUN mkdir -p /etc/apt/keyrings && \
+    wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null && \
+    echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | tee /etc/apt/sources.list.d/mozilla.list > /dev/null && \
+    echo "Package: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000" | tee /etc/apt/preferences.d/mozilla && \
+    apt-get update && \
+    apt-get install -y firefox && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Copy configuration and entrypoint files
+COPY krb5.conf /etc/krb5.conf
+COPY setup_for_tdp.sh /root/setup_for_tdp.sh
+RUN chmod +x /root/setup_for_tdp.sh
 
-# Copy Kerberos configuration files if you have any (optional)
-ADD firefox-container/krb5.conf /etc/krb5.conf
-
-# Add the SSL certificate
-ADD files/tdp_getting_started_certs/tdp_ca.crt /root/tdp_ca.crt
-
-# Add the docker-entrypoint.sh script.
-ADD firefox-container/docker-entrypoint.sh /root
-
-# Script preparing /etc/hosts SSL certificate and firefox config
-ENTRYPOINT ["/root/docker-entrypoint.sh"]
-
-# Default to an interactive shell after the script completes
 CMD ["/bin/bash"]

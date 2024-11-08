@@ -1,0 +1,35 @@
+services:
+  manager:
+    build:
+      context: .
+    environment:
+      - LIBVIRT_DEFAULT_URI="qemu:///system"
+    volumes:
+      - /var/run/libvirt/:/var/run/libvirt/
+      - ~/.vagrant.d:/.vagrant.d
+      - ${PWD}:${PWD}
+    working_dir: ${PWD}
+    network_mode: host
+    command: >
+      bash -c "
+        echo 'TDP manager container is ready to use!';
+        tail -f /dev/null
+      "
+
+  firefox:
+    build:
+      context: ./firefox-container
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - ${PWD}/files/tdp_getting_started_certs:/root/files/tdp_getting_started_certs
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/root/.Xauthority
+    working_dir: /root
+    ports:
+      - "5911:5900"
+    command: >
+      bash -c "
+        echo 'Firefox container is ready to use!';
+        tail -f /dev/null
+      "
