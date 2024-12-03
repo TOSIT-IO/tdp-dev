@@ -13,7 +13,7 @@ The below steps will deploy a TDP cluster with all features so you MUST install 
 
 If Vagrant is enabled, the Ansible hosts.ini file will be generated using the hosts variable in tdp-vagrant/vagrant.yml.
 
-### Clone the project ans submodules
+### Clone the project and submodules
 
 Clone the project with every submodule to that last commit on the `master/main` branch.
 
@@ -259,6 +259,76 @@ put 'tdp_user_table', 'row1', 'cf:testColumn', 'testValue'
 scan 'tdp_user_table'
 disable 'tdp_user_table'
 drop 'tdp_user_table'
+```
+
+## Web UI links
+
+To access the components web UI links on your host , you will have to setup the IP adresses with their respective FQDN in `etc/hosts`, introduce the SSL certificate into your browser and install and configure Kerberos client. Luckely a container image has been created where verything is alraedy setup. However, the SSl certificate which is created with the `ansible_collections/tosit/tdp_prerequisites/playbooks/certificates.yml` playbook must already present in `files/tdp_getting_started_certs` otherwise the build will fail.
+
+### Firefox container
+
+1. Build the container:
+
+    ```sh
+    docker build -t firefox-kerberos -f firefox-container/Dockerfile .
+    ```
+
+2. Run the container:
+
+    ```sh
+    # Run the container
+    docker run --rm -it \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    firefox-kerberos
+    ```
+
+    **Note**: If Docker does not have the rights to access the X-Server execute `xhost +local:docker`
+
+3. Inside the container create a Kerberos ticket for example:
+
+    ```sh
+    # Do a ticket demand
+    echo 'tdp_user123' | kinit tdp_user@REALM.TDP
+    ```
+
+4. Launch the browser and access the web UIs:
+
+    ```sh
+    firefox
+    ```
+
+### TDP links
+
+- [HDFS NN Master 01](https://master-01.tdp:9871/dfshealth.html)
+- [HDFS NN Master 02](https://master-02.tdp:9871/dfshealth.html)
+- [YARN RM Master 01](https://master-01.tdp:8090/cluster/apps)
+- [YARN RM Master 02](https://master-02.tdp:8090/cluster/apps)
+- [MapReduce Job History Server](https://master-03.tdp:19890/jobhistory)
+- [HBase Master 01](https://master-01.tdp:16010/master-status)
+- [HBase Master 02](https://master-02.tdp:16010/master-status)
+- [Spark History Server](https://master-03.tdp:18081/)
+- [Spark3 History Server](https://master-03.tdp:18083/)
+- [Ranger Admin](https://master-03.tdp:6182/index.html)
+
+### TDP Extra links
+
+- [JupyterHub](https://master-03.tdp:8000/)
+- [Hue](https://edge-01.tdp:8888/)
+- [Livy Spark](https://edge-01.tdp:8998/ui)
+- [Livy Spark3](https://edge-01.tdp:8999/ui)
+
+### TDP Observability links
+
+- [Grafana](https://master-01.tdp:3000/)
+- [Prometheus](https://master-01.tdp:9090/)
+
+Default username and passwords for Ranger, Grafana and Promotheus are `admin` as username for all and  respectively `RangerAdmin123`, `GrafanaAdmin123` and `PrometheusAdmin123` as password.
+
+**Note:** TDP extra deploys a firewall which is enabled, if you do not need it enabled for development you may disable it as follows:
+
+```sh
+ansible-playbook ansible_collections/tosit/tdp_extra/playbooks/firewall_generic_stop.yml
 ```
 
 ## Destroy the Cluster
