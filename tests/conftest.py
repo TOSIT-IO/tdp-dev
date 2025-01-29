@@ -194,6 +194,11 @@ def knox_gateway(host: Host, user: str) -> Dict[str, str]:
 
 
 @pytest.fixture(scope="session")
+def webhdfs_gateway(host: Host, user: str) -> str:
+    return f"https://{host.backend.get_hosts('hdfs_nn')[0]}:9871"
+
+
+@pytest.fixture(scope="session")
 def hbase_rest(host: Host) -> str:
     return f"https://{host.backend.get_hosts('hbase_rest')[0]}:8080"
 
