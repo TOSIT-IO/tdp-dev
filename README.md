@@ -261,6 +261,22 @@ disable 'tdp_user_table'
 drop 'tdp_user_table'
 ```
 
+## Automatic python tests with pytest and testinfra
+
+Run the tests sequentially:
+
+```sh
+py.test tests
+```
+
+Run the tests in parallel:
+
+```sh
+py.test -n 2 tests
+```
+
+**Note:** Running the tests in parallel requires more resources and tests might fail if resources are not sufficient.
+
 ## Web UI links
 
 To access the components web UI links on your host , you will have to setup the IP adresses with their respective FQDN in `etc/hosts`, introduce the SSL certificate into your browser and install and configure Kerberos client. Luckely a container image has been created where verything is alraedy setup. However, the SSl certificate which is created with the `ansible_collections/tosit/tdp_prerequisites/playbooks/certificates.yml` playbook must already present in `files/tdp_getting_started_certs` otherwise the build will fail.

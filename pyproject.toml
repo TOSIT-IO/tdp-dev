@@ -16,6 +16,8 @@ tdp-lib = { path = "tdp-lib", develop = true, extras=["visualization", "mysql", 
 passlib = "1.7.4"
 jmespath = "1.0.1"
 ansible-lint = {version = "6.17.2", markers = "platform_system != 'Windows'"}
+pytest-xdist = "^3.6.1"
+pytest-testinfra = "^10.1.1"
 
 [build-system]
 requires = ["poetry-core"]
