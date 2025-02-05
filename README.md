@@ -283,7 +283,7 @@ To access the components web UI links on your host , you will have to setup the 
     firefox-kerberos
     ```
 
-    **Note**: If Docker does not have the rights to access the X-Server execute `xhost +local:docker`
+    **Note**: If Docker does not have the rights to access the X-Server execute `xhost +local:`
 
 3. Inside the container create a Kerberos ticket for example:
 
