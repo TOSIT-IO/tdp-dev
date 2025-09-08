@@ -93,12 +93,18 @@ TDP-lib is contained in the dependencies but not its development dependencies.
 
 ### Download the component releases
 
-The text file `scripts/tdp-release-uris.txt` contains uris to the component releases of the stack TDP 1.1 to this date. They might be outdated and not correspond to the versions set in the collections after a certain time. you may have to ajust the uris in this case.
+The text file `scripts/tdp-v2-release-uris.txt` contains uris to the component releases of the stack TDP 2.0 to this date. They might be outdated and not correspond to the versions set in the collections after a certain time. you may have to ajust the uris in this case.
 
 Download the relases from in the `files`directory with the `download_releases.sh` file from the container:
 
 ```sh
 ./scripts/download_releases.sh
+```
+
+**Note :** To have the TDP 1.1 stack component releases, set the variable `tdp_release_script_path` with the `tdp-v1-release-uris.txt` before executing the script:
+
+```sh
+tdp_release_script_path=scripts/tdp-v1-release-uris.txt ./scripts/download_releases.sh
 ```
 
 ### Setup TDP-lib development dependecies (optional)
