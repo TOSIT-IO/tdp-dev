@@ -25,7 +25,7 @@ ranger_admin_restart: always
 ranger_usync_restart: always
 ranger_kms_restart: always
 
-ranger_admin_heapsize: 256m
-ranger_kms_heapsize: 256m
-ranger_usersync_heapsize: 256m
+ranger_admin_heapsize: 1G
+ranger_kms_heapsize: 1G
+ranger_usersync_heapsize: 1G
 ranger_solr_heapsize: 256m
