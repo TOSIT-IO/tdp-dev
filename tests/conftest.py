@@ -96,6 +96,11 @@ def realm(host: Host) -> str:
     return host.ansible.get_variables()["realm"]
 
 
+@pytest.fixture(scope="session")
+def domain(host: Host) -> str:
+    return host.ansible.get_variables()["domain"]
+
+
 # https://github.com/pytest-dev/pytest-xdist/tree/v2.4.0#making-session-scoped-fixtures-execute-only-once
 @pytest.fixture(scope="session")
 def lock(tmp_path_factory, worker_id: str):
@@ -201,6 +206,11 @@ def webhdfs_gateway(host: Host, user: str) -> str:
 @pytest.fixture(scope="session")
 def hbase_rest(host: Host) -> str:
     return f"https://{host.backend.get_hosts('hbase_rest')[0]}:8080"
+
+
+@pytest.fixture(scope="session")
+def phoenix_queryserver(host: Host, domain: str) -> str:
+    return f"https://{host.backend.get_hosts('phoenix_queryserver_daemon')[0]}.{domain}:8765"
 
 
 @pytest.fixture(scope="session")
