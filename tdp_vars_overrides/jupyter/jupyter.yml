@@ -1,0 +1,13 @@
+---
+jupyterhub_properties:
+  jupyterhub:
+    db_url: postgresql://jupyterhub:jupyterhub@{{ groups['postgresql'] | first | tosit.tdp.access_fqdn(hostvars) }}:{{ postgresql_server_port }}/jupyterhub
+    upgrade_db: true
+  yarnspawner:
+     options_form: |-
+      f:"""<label for="queue">Queue name:&nbsp;</label>
+      <input name="queue" type="text" value="default" required /><br />
+      <label for="cpu">Instance Cpu:&nbsp;</label>
+      <input name="cpu" type="number" min="1" step="1" value="1" required /><br />
+      <label for="memory">Instance Memory:&nbsp;</label>
+      <input name="memory" type="text" value="1024M" required /><br />"""
