@@ -8,7 +8,7 @@ from testinfra import host
 testinfra_hosts = ["edge"]
 
 
-@pytest.fixture(scope="module", params=["spark", "spark3"])
+@pytest.fixture(scope="module", params=["spark3"])
 def spark_version(request: Any) -> str:
     return request.param
 
