@@ -100,31 +100,6 @@ ranger_policies:
           - { isAllowed: true, type: create }
         conditions: []
 
-  # Kafka
-  - name: tdp_user - topic
-    description: test_user access to tdp-user-* topics
-    service: kafka-tdp
-    isAuditEnabled: true
-    isEnabled: true
-    resources:
-      topic:
-        isExcludes: false
-        values: ["tdp-user-*"]
-    policyItems:
-      - users: [tdp_user]
-        groups: []
-        delegateAdmin: true
-        accesses:
-          - { isAllowed: true, type: create }
-          - { isAllowed: true, type: publish }
-          - { isAllowed: true, type: consume }
-          - { isAllowed: true, type: configure }
-          - { isAllowed: true, type: describe }
-          - { isAllowed: true, type: delete }
-          - { isAllowed: true, type: describe_configs }
-          - { isAllowed: true, type: alter_configs }
-        conditions: []
-
   # Knox
   - name: tdp_user - tdpldap policy
     description: tdp_user access to tdpldap policy
