@@ -169,8 +169,10 @@ TDP can either be deployed with the manager or directly with Ansible.
     Initialize the database and create the `tdp_vars` directory with the `tdp_vars_overrides` variables:
 
     ```sh
-    tdp init --overrides tdp_vars_overrides
+    tdp init --conf tdp_vars_overrides
     ```
+
+    **Note**: older versions of TDP-Lib have the option `--overrides` instead of `--conf`
 
     Make the DAG of operations:
 
@@ -278,10 +280,10 @@ py.test tests
 Run the tests in parallel:
 
 ```sh
-py.test -n 2 tests
+py.test tests
 ```
 
-**Note:** Running the tests in parallel requires more resources and tests might fail if resources are not sufficient.
+**Note:** If you want to run tests in parallel you may add the option `-n=2` for example. However, running the tests in parallel requires more resources and tests might fail if resources are not sufficient.
 
 ## Web UI links
 
