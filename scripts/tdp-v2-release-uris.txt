@@ -31,5 +31,5 @@ https://github.com/TOSIT-IO/zookeeper/releases/download/3.8.4-0.0/apache-zookeep
 https://github.com/TOSIT-IO/kafka/releases/download/2.8.2-TDP-0.1.0/kafka_2.13-2.8.2-TDP-0.1.0-SNAPSHOT.tgz
 https://github.com/TOSIT-IO/jupyterhub/releases/download/2.3.1-0.0/jupyterhub-2.3.1-0.0.tar.gz
 https://github.com/TOSIT-IO/jupyterlab/releases/download/3.2.9-0.0/jupyterlab-3.2.9-0.0.tar.gz
-https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.11.0-cp38-cp38-manylinux2014_x86_64/hue-release-4.11.0-cp38-cp38-manylinux2014_x86_64.tar.gz
+https://github.com/TOSIT-IO/hue/releases/download/hue-release-4.11.0-2.0-cp38-cp38-manylinux2014_x86_64/hue-release-4.11.0-2.0-cp38-cp38-manylinux2014_x86_64.tar.gz
 https://github.com/TOSIT-IO/hbase-operator-tools/releases/download/1.3.0-0.0/hbase-hbck2-1.3.0-0.0.jar
