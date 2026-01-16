@@ -20,7 +20,7 @@ https://github.com/TOSIT-IO/ranger/releases/download/2.6.0-1.0/ranger-2.6.0-1.0-
 https://github.com/TOSIT-IO/ranger/releases/download/2.6.0-1.0/ranger-2.6.0-1.0-hbase-plugin.tar.gz
 https://github.com/TOSIT-IO/ranger/releases/download/2.6.0-1.0/ranger-2.6.0-1.0-usersync.tar.gz
 https://github.com/TOSIT-IO/ranger/releases/download/2.6.0-1.0/ranger-2.6.0-1.0-kms.tar.gz
-https://github.com/TOSIT-IO/spark/releases/download/3.5.6-1.0/spark-3.5.6-1.0-bin-tdp.tgz
+https://github.com/TOSIT-IO/spark/releases/download/3.5.8-1.0/spark-3.5.8-1.0-bin-tdp.tgz
 https://github.com/TOSIT-IO/iceberg/releases/download/1.4.3-0.0/iceberg-spark-runtime-3.5_2.12-1.4.3-0.0.jar
 https://github.com/TOSIT-IO/iceberg/releases/download/1.4.3-0.0/iceberg-mr-1.4.3-0.0.jar
 https://github.com/TOSIT-IO/sparkmagic/releases/download/0.21.0-0.0/sparkmagic-0.21.0-0.0.tar.gz
