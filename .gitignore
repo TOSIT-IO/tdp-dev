@@ -9,3 +9,4 @@ files
 ansible_collections/community*
 tdp_vars
 tests/__pycache__
+.tmp
