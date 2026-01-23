@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Location of poetry installation
-ENV POETRY_HOME=/usr/local
+ENV UV_INSTALL_DIR=/usr/local/bin
 
 # Install Poetry
-RUN curl -sSL https://install.python-poetry.org | python -
+RUN curl -LsSf https://astral.sh/uv/0.9.26/install.sh | sh
 
 # Create the tdp directory
 RUN mkdir -p /home/tdp/tdp-dev

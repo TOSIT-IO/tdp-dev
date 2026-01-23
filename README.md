@@ -63,12 +63,12 @@ First build the image and run the container:
 docker build -t tdp-dev dev
 
 # make the .poetrycache folder
-mkdir .poetrycache
+mkdir .uvcache
 
 # Run command:
 docker run --rm -it \
 -v $PWD:/home/tdp/tdp-dev \
--v $PWD/.poetrycache:/home/tdp/.cache/pypoetry \
+-v $PWD/.uvcache:/home/tdp/.cache/uv \
 --network=host \
 --env CONTAINER_UID=$(id -u) --env CONTAINER_GID=$(id -g) \
 --env DISPLAY=$DISPLAY \
@@ -86,7 +86,7 @@ Inside the container create the `venv-dev` virtual environment which will contai
 ```sh
 python -m venv venv-dev
 source venv-dev/bin/activate
-poetry install
+uv sync --all-extras --active
 ```
 
 TDP-lib is contained in the dependencies but not its development dependencies.
