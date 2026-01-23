@@ -5,11 +5,9 @@ description = "tdp-dev dependencies"
 authors = [{ name = "TOSIT" }]
 license = "Apache-2.0"
 readme = "README.md"
-
 requires-python = ">=3.9.0,!=3.9.7,<4.0"
 dependencies = [
-
-    "tdp-lib",
+    "tdp-lib[visualization,mysql,postgresql]",
     "passlib==1.7.4",
     "jmespath==1.0.1",
     "ansible-lint==6.17.2",
@@ -17,17 +15,17 @@ dependencies = [
     "pytest-testinfra==10.1.1",
 ]
 
+[tool.uv]
+# https://github.com/ansible/ansible-lint/issues/4348
+environments = ["sys_platform != 'win32'"]
+
 [tool.uv.sources]
-tdp-lib = { path = "./tdp-lib" }
+tdp-lib = { path = "./tdp-lib", editable = true }
 
 [project.urls]
 Homepage = "https://github.com/TOSIT-FR/tdp-dev"
 Repository = "https://github.com/TOSIT-FR/tdp-dev"
 Documentation = "https://github.com/TOSIT-FR/tdp-dev"
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["tdp"]
+[tool.setuptools]
+py-modules = []
