@@ -54,7 +54,7 @@ Ansible configuration has been preconfigured for the Vagrant setup in the `ansib
 
 ### TDP-dev python environment setup
 
-Now to setup the python dependecis for TDP-dev which are marked in the poetry.lock file at the root of the project we are going to use a container.
+Now to setup the python dependecis for TDP-dev which are marked in the uv.lock file at the root of the project we are going to use a container.
 
 First build the image and run the container:
 
@@ -62,7 +62,7 @@ First build the image and run the container:
 # Build command:
 docker build -t tdp-dev dev
 
-# make the .poetrycache folder
+# make the .uvcache folder
 mkdir .uvcache
 
 # Run command:
@@ -76,7 +76,7 @@ tdp-dev
 ```
 
 - `-v $PWD:/home/tdp/tdp-dev` binds the working directory of your container to this repository in your host.
-- `-v $PWD/.poetrycache:/home/tdp/.cache/pypoetry` binds the `.poetrycache` folder to the poetry cache in the container.
+- `-v $PWD/.uvcache:/home/tdp/.cache/uv` binds the `.uvcache` folder to the uv cache in the container.
 - With the `--network=host` option the container is connected to your host network which enables it to communicate with the VMs.
 - The `--env CONTAINER_UID=$(id -u) --env CONTAINER_GID=$(id -g)` environment variables enable the container to have the same user as your host.
 - The `--env DISPLAY=$DISPLAY` environment variable is for the tdp-lib command `tdp dag` to be able to display the dag in a new window on your host.
@@ -114,9 +114,7 @@ If you desire de develop TDP-lib with pytest, use the linter ruff, you will have
 Inside the container create the `venv-lib` virtual environment and install the dependencies:
 
 ```sh
-python -m venv venv-lib
-source venv-lib/bin/activate
-poetry install -C tdp-lib -E visualization -E mysql -E postgresql-binary
+uv sync --all-extras --directory tdp-lib
 ```
 
 Read the `tdp-lib` documentation for more information.

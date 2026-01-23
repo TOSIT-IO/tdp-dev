@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vim \ 
     && rm -rf /var/lib/apt/lists/*
 
-# Location of poetry installation
+# Location of uv installation
 ENV UV_INSTALL_DIR=/usr/local/bin
 
-# Install Poetry
+# Install uv
 RUN curl -LsSf https://astral.sh/uv/0.9.26/install.sh | sh
 
 # Create the tdp directory
