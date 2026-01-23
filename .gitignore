@@ -4,8 +4,9 @@ logs/tdp.log
 files
 .ansible
 .cache
-.poetrycache
+.uvcache
 .vagrant*
 ansible_collections/community*
 tdp_vars
 tests/__pycache__
+.tmp
