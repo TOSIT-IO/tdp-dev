@@ -1,5 +1,6 @@
 sqlite.db
 venv*
+.venv
 logs/tdp.log
 files
 .ansible
